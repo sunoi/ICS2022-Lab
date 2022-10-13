@@ -2,6 +2,7 @@
 
 uint64_t multimod(uint64_t a, uint64_t b, uint64_t m) {
 	uint64_t sum = 0;
+	//tag
 	while (a >= 1) {
 		if (a&1 == 1) {
 			sum = (sum+b)&(m-1);
