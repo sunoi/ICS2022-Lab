@@ -1,24 +1,13 @@
 #include <stdint.h>
 
-uint64_t myMod(uint64_t a, uint64_t m) {
-	while (a >= m) {
-		a -= m;
-	}
-	return a;
-}
-
-uint64_t multimod(uint64_t a, uint64_t b, uint64_t m) {
-	uint64_t sum = 0;
+int64_t multimod(int64_t a, int64_t b, int64_t m) {
+	int64_t sum = 0;
 	while (a >= 1) {
 		if (a&1 == 1) {
-			sum = myMod(sum+b, m);
+			sum = (sum+b)%m;
 		}
 		a = a >> 1;
-		b = myMod((b << 1), m);
+		b = (b << 1)%m;
 	}
   return sum;
-}
-
-int main(){
-	return 0;
 }
