@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <stdio.h>
 
 uint64_t Mod(uint64_t a, uint64_t m) {
 	while (a >= m) {
