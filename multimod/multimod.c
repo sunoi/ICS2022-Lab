@@ -31,16 +31,16 @@ uint64_t multimod(uint64_t a, uint64_t b, uint64_t m) {
 			uint64_t temp = sum + b;
 			if (temp < sum || temp < b) {
 				//printf("%lu  ", temp);
-				temp = Mod(Mod(temp, m) + (~m)+1, m);
+				temp = Mod((Mod(sum, m)+Mod(b, m)) + Mod((~m)+1, m), m);
 				//printf("temp=%lu\n", temp);
 			}
 			sum = Mod(temp, m);
 		}
 		a = a >> 1;
 		if (b << 1 < b) {
-			b = Mod((b << 1) + (~m) + 1, m);
+			b = Mod(Mod(b << 1, m) + Mod((~m) + 1, m), m);
 		}
-		else b = Mod((b << 1), m);
+		else b = Mod(b << 1, m);
 	}
   return sum;
 }
