@@ -1,5 +1,5 @@
 NAME := $(shell basename $(PWD))
-all: $(NAME)-64 $(NAME)-32
+all: $(NAME)-64
 export MODULE := Lab1
 include ../Makefile
 
