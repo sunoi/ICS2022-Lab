@@ -50,12 +50,40 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 }
 
 int asm_setjmp(asm_jmp_buf env) {
-  return setjmp(env);
-	//asm ("mov %[env] "
-			
-	//	);
+  //return setjmp(env);
+	asm ("mov %[env],%%rdi;"
+			 "pop %%rsi;"
+			 "movq %%rbx,(%%rdi);"
+			 "movq %%rsp,8(%%rdi);"
+			 "push %%rsi;"
+			 "movq %%rbp,16(%%rdi);"
+			 "movq %%r12,24(%%rdi);"
+			 "movq %%r13,32(%%rdi);"
+			 "movq %%r14,40(%%rdi);"
+			 "movq %%r15,48(%%rdi);"
+			 "movq %%rsi,56(%%rdi);"
+			 "mov $0x0,%%eax;"
+			 :
+			 :[env]"r"(env)
+			 :"%rdi","%rsi","%rbx","%rbp","%r12","%r13","%r14","%r15","%eax"
+		);
+	return 0;
 }
 
 void asm_longjmp(asm_jmp_buf env, int val) {
-  longjmp(env, val);
+  asm ("movl %[val],%%eax;"
+			 "mov %[env],%%rdi;"
+			 "movq %%rdi,%%rbx;"
+			 "movq 8(%%rdi),%%rsp;"
+			 "movq 16(%%rdi),%%rbp;"
+			 "movq 24(%%rdi),%%r12;"
+			 "movq 32(%%rdi),%%r13;"
+			 "movq 40(%%rdi),%%r14;"
+			 "movq 48(%%rdi),%%r15;"
+			 "jmp *56(%%rdi);"
+			 :
+			 :[val]"r"(val),[env]"r"(env)
+			 :"%eax","%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15"
+			);
+	//longjmp(env, val);
 }
