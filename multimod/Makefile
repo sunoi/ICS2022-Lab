@@ -5,3 +5,4 @@ include ../Makefile
 
 run: all
 	./$(NAME)-64
+
