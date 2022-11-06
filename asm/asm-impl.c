@@ -65,7 +65,8 @@ int asm_setjmp(asm_jmp_buf env) {
 			 "mov $0x0,%%eax;"
 			 :
 			 :[env]"r"(env)
-			 :"%rdi","%rsi","%rbx","%rbp","%r12","%r13","%r14","%r15","%eax"
+			 :
+			 //:"%rdi","%rsi","%rbx","%rbp","%r12","%r13","%r14","%r15","%eax"
 		);
 	return 0;
 }
@@ -83,7 +84,8 @@ void asm_longjmp(asm_jmp_buf env, int val) {
 			 "jmp *56(%%rdi);"
 			 :
 			 :[val]"r"(val),[env]"r"(env)
-			 :"%eax","%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15"
+			 :
+			 //:"%eax","%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15"
 			);
 	//longjmp(env, val);
 }
