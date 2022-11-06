@@ -10,11 +10,8 @@ int64_t asm_add(int64_t a, int64_t b) {
 
 int asm_popcnt(uint64_t x) {
   int s = 0;
-  /*for (int i = 0; i < 64; i++) {
-    if ((x >> i) & 1) s++;
-  }*/
-	asm ("mov $0x0,%%ecx;"
-			 "mov $0x0,%%edx;"
+	asm ("xor %%ecx,%%ecx;"
+			 "xor %%edx,%%edx;"
 			 "mov %[x],%%rsi;"
 			 "L1: mov %%rsi,%%rax;"
 			 "shr %%ecx,%%rax;"
@@ -36,7 +33,7 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 			 "mov %[src],%%rsi;"
 		 	 "mov %[n],%%rdx;"
 			 "mov %%rdi,%%rax;"
-			 "xor %%ecx,%%ecx;"
+			 "xor %%rcx,%%rcx;"
 			 "L2:movzbl (%%rsi,%%rcx,1),%%r8d;"
 			 "mov %%r8b,(%%rax,%%rcx,1);"
 			 "add $0x1,%%rcx;"
@@ -44,7 +41,7 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 			 "jne L2;"
 			 :
 			 :[dest]"r"(dest), [src]"r"(src), [n]"r"(n)
-			 :"%rdi","%edx","%rsi","%rax","%ecx","%rcx","%rdx"
+			 :"%rdi","%rsi","%rax","%rcx","%rdx"
 			);
 	return dest;
 }
@@ -62,17 +59,17 @@ int asm_setjmp(asm_jmp_buf env) {
 			 "movq %%r14,40(%%rdi);"
 			 "movq %%r15,48(%%rdi);"
 			 "movq %%rsi,56(%%rdi);"
-			 "mov $0x0,%%eax;"
+			 "xor %%eax,%%eax;"
 			 :
 			 :[env]"r"(env)
 			 :
-			 //:"%rdi","%rsi","%rbx","%rbp","%r12","%r13","%r14","%r15","%eax"
+			 //:"%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15","%eax"
 		);
 	return 0;
 }
 
 void asm_longjmp(asm_jmp_buf env, int val) {
-  asm ("movl %[val],%%eax;"
+  asm ("mov %[val],%%eax;"
 			 "mov %[env],%%rdi;"
 			 "movq %%rdi,%%rbx;"
 			 "movq 8(%%rdi),%%rsp;"
@@ -84,8 +81,8 @@ void asm_longjmp(asm_jmp_buf env, int val) {
 			 "jmp *56(%%rdi);"
 			 :
 			 :[val]"r"(val),[env]"r"(env)
-			 :
-			 //:"%eax","%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15"
+			 //:
+			 :"%eax","%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15"
 			);
 	//longjmp(env, val);
 }
