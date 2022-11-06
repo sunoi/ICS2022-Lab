@@ -62,8 +62,7 @@ int asm_setjmp(asm_jmp_buf env) {
 			 "xor %%eax,%%eax;"
 			 :
 			 :[env]"r"(env)
-			 :
-			 //:"%rdi","%rbx","%rbp","%r12","%r13","%r14","%r15","%eax"
+			 :"%rdi","%eax"
 		);
 	return 0;
 }
