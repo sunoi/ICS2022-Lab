@@ -32,22 +32,20 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 	asm ("mov %[dest],%%rdi;"
 			 "mov %[src],%%rsi;"
 		 	 "mov %[n],%%rdx;"
-			 "mov %%rdi,%%rax;"
 			 "xor %%rcx,%%rcx;"
-			 "L2:movzbl (%%rsi,%%rcx,1),%%r8d;"
-			 "mov %%r8b,(%%rax,%%rcx,1);"
+			 "L2:mov (%%rsi,%%rcx,1),%%r8d;"
+			 "mov %%r8d,(%%rsi,%%rcx,1);"
 			 "add $0x1,%%rcx;"
 			 "cmp %%rcx,%%rdx;"
 			 "jne L2;"
 			 :
 			 :[dest]"r"(dest), [src]"r"(src), [n]"r"(n)
-			 :"%rdi","%rsi","%rax","%rcx","%rdx"
+			 :"%rdi","%rsi","%rcx","%rdx"
 			);
 	return dest;
 }
 
 int asm_setjmp(asm_jmp_buf env) {
-  //return setjmp(env);
 	asm ("mov %[env],%%rdi;"
 			 "pop %%rsi;"
 			 "movq %%rbx,(%%rdi);"
