@@ -34,7 +34,7 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 		 	 "mov %[n],%%rdx;"
 			 "xor %%rcx,%%rcx;"
 			 "L2:movzbl (%%rsi,%%rcx,1),%%r8d;"
-			 "mov %%r8d,(%%rsi,%%rcx,1);"
+			 "mov %%r8b,(%%rsi,%%rcx,1);"
 			 "add $0x1,%%rcx;"
 			 "cmp %%rcx,%%rdx;"
 			 "jne L2;"
